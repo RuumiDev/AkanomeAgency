@@ -17,6 +17,12 @@ export const metadata: Metadata = {
   description: "Akanome Agency - Meet the Team",
   icons: {
     icon: "/assets/favicon/favicon.ico",
+    apple: "/assets/favicon/apple-touch-icon.png",
+  },
+  openGraph: {
+    title: "Akanome",
+    description: "Akanome Agency - Meet the Team",
+    images: ["/assets/Akanome logo.png"],
   },
 };
 
