@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Akanome",
     description: "Akanome Agency - Meet the Team",
-    images: ["/assets/Akanome logo.png"],
+    images: ["https://akanomeagency.netlify.app/assets/Akanome%20logo.png"],
   },
 };
 
