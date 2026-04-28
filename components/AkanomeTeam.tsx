@@ -24,7 +24,7 @@ interface TeamMember {
   image: string
 }
 
-const teamMembers: TeamMember[] = [
+const teamMembers: TeamMember[] = [ 
   {
     id: 1,
     role: 'LEADER',
@@ -70,6 +70,18 @@ export function AkanomeTeam() {
   const titleRef     = useRef<HTMLDivElement>(null)
   const cardsRef     = useRef<HTMLDivElement>(null)
   const [isLoaderFinished, setIsLoaderFinished] = useState(false)
+
+  // ── 0. Image preload — runs immediately so images are cached before user reaches team section ──
+  useEffect(() => {
+    const srcs = [
+      ...teamMembers.map(m => m.image),
+      ...teamMembers.map(m => m.roleImage),
+    ]
+    srcs.forEach(src => {
+      const img = new window.Image()
+      img.src = src
+    })
+  }, [])
 
   // ── 1. Scroll restoration ────────────────────────────────────────────────────
   useEffect(() => {
@@ -142,7 +154,7 @@ export function AkanomeTeam() {
             scrub: 1,
           },
           yPercent: 120,
-          autoAlpha: 0,
+          opacity: 0,
           stagger: { each: 0.04, from: 'center' },
           ease: 'sine.out',
         })
@@ -151,10 +163,10 @@ export function AkanomeTeam() {
       // Cards — scroll-responsive entrance
       if (cardsRef.current) {
         gsap.fromTo('.team-card',
-          { y: 100, autoAlpha: 0 },
+          { y: 100, opacity: 0 },
           {
             y: 0,
-            autoAlpha: 1,
+            opacity: 1,
             duration: 1.2,
             ease: 'power3.out',
             force3D: true,
@@ -243,7 +255,7 @@ export function AkanomeTeam() {
             className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6 w-full max-w-[90rem] mx-auto px-8 pb-20 place-items-center"
           >
             {teamMembers.map((member) => (
-              <div key={member.id} className="team-card w-full max-w-[340px] md:max-w-none flex flex-col items-center mx-auto will-change-transform opacity-0">
+              <div key={member.id} className="team-card w-full max-w-[340px] md:max-w-none flex flex-col items-center mx-auto will-change-transform" style={{ opacity: 0 }}>
 
                 {/* Profile Card */}
                 <div className="w-full">
@@ -276,6 +288,7 @@ export function AkanomeTeam() {
                   <img
                     src={member.roleImage}
                     alt={member.role}
+                    decoding="async"
                     className="h-52 md:h-64 lg:h-72 w-auto object-contain drop-shadow-[0_0_15px_rgba(227,6,19,0.4)]"
                   />
                 </div>
